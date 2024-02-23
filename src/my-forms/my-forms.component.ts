@@ -1,22 +1,24 @@
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-my-forms',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule],
   template: `
-    <form (submit)="showName()">
-      <input type="text" [formControl]="name" required/>
-      <input type="password" [formControl]="password" name="password" required>
-      <input type="submit" value="Submit"  />
+    <form [formGroup]="registrationForm" (ngSubmit)="showName()">
+      <input type="text" formControlName="name" name="name" required/>
+      <input type="password" formControlName="password" name="password" required />
+      <input type="submit" value="Submit" />
     </form>
-    <p>{{name.value}}</p>
-    <p>{{password.value}}</p>
+    <p>{{ registrationForm.value.name }}</p>
+    <p>{{registrationForm.value.password}}</p>
   `,
   styles: `
   p {
     background-color: red;
+    color: white;
+    font-weight: bold;
   }
   p input {
     padding: 10px;
@@ -44,9 +46,13 @@ import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
   `,
 })
 export class MyFormsComponent {
-  name = new FormControl('Olusola');
-  password = new FormControl('');
+
+  // Switching over to using FormGroups
+  registrationForm = new FormGroup({
+    name: new FormControl('Olusola'),
+    password: new FormControl(''),
+  });
   showName() {
-    alert(this.name.value + '  ' + this.password.value);
+    alert(this.registrationForm.value.name + '  ' + this.registrationForm.value.password);
   }
 }
